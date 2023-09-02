@@ -202,18 +202,36 @@ catalogo.forEach((item)=>{
                 <div class='p-2 bg-black text-white h-auto flex flex-col gap-1.5'>
                     <h4>${item.name}</h4>
                     <span>R$ ${item.price}</span>
-                    <button class='text-black pt-[3px] pb-[3px] bg-white rounded-[3px] font-medium' id='comprar'><i class="pr-2 fa-solid fa-cart-plus"></i>Comprar</button>
+                    <button class='text-black pt-[3px] pb-[3px] bg-white rounded-[3px] font-medium' id='comprar' data-id='${item.id}'><i class="pr-2 fa-solid fa-cart-plus"></i>Comprar</button>
                 </div>
-            </div>
-    `
-
-document.getElementById("root").innerHTML += Card;
-})
+            </div>`;
+    document.getElementById("root").innerHTML += Card;
+});
 
 const comprarButtons = document.querySelectorAll('#comprar');
 
 comprarButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        alert(`Clicar em button carrinho!`);
+        // Obtém o ID do produto a partir do atributo 'data-id' do botão
+        const productId = button.getAttribute('data-id');
+        
+        const product = catalogo.find(item => item.id === parseInt(productId));
+        
+        if(product){
+            const productInfo = `
+                <div class='flex items-start bg-red-500 w-[275px]'>
+                    <div>
+                        <img class='h-[150px] w-[100px] object-cover' src="${product.img}" alt="Imagem ${product.id}" />
+                    </div>
+                    <div class='p-3 flex flex-col justify-between h-full w-full'>
+                        <div><h4>${product.name}</h4></div>
+                        <div class='flex justify-between items-center bg-blue-500 w-full'>
+                            <div><span>R$ ${product.price}</span></div>
+                            <div><span>x</span></div>
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('listProducts').innerHTML += productInfo;
+        }
     });
 });
